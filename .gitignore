@@ -1,0 +1,7 @@
+# VS Code
+.vscode
+*.code-workspace
+
+# Data files and folders
+/data/
+*.csv
