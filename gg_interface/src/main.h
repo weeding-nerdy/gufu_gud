@@ -2,12 +2,18 @@
 #define _MAIN_H
 
 // // Library imports
-// #include <Arduino.h>
-// #include <Adafruit_INA260.h>
+#include <Arduino.h>
+#include <ArduinoJson.h>
+#include <Adafruit_INA260.h>
 
 // Interface pins
-const uint8_t ledPin = 13;
-const uint8_t alertPin = 21;
+#define LED_PIN 13
+#define ALERT_PIN 21
+#define INIT_ATTEMPTS 5
+#define SERIAL_BAUD 115200
+#define JSON_BUFFER_SIZE 24
+#define I2C_BUS_SPEED 4e2 * 1e3
+#define CONVERSION_READY_MASK 0x400
 
 // Protos
 void alert(void);
