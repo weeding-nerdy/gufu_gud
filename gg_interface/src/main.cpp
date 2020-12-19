@@ -25,6 +25,7 @@ void setup() {
             retries--;
         }
         Serial.println(F("Found INA260!"));
+        break;
     }
 
     // Configure I2C bus speed
