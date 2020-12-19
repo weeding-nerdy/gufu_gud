@@ -2,7 +2,6 @@
 
 Adafruit_INA260 ina260 = Adafruit_INA260();
 bool initialized = false;
-volatile bool ledState = true;
 
 void setup() {
     // Every embedded system needs an LED
@@ -54,14 +53,8 @@ void loop() {
     }
 
     // Das blinkenlight!
-    if (ledState) {
-        digitalWrite(LED_PIN, LOW);
-    } else {
-        digitalWrite(LED_PIN, HIGH);
-    }
-
-    ledState = !ledState;
-    delay(100);
+    digitalWrite(LED_PIN, !digitalRead(LED_PIN));
+    delay(500);
 
     // If we lose connection to Serial
     if (!Serial) {
