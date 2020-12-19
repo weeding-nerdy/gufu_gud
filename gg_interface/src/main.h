@@ -11,7 +11,7 @@
 #define ALERT_PIN 21
 #define SERIAL_BAUD 115200
 #define I2C_BUS_SPEED 4e2 * 1e3
-#define CONVERSION_READY_ADDRESS 0x400
+#define CONVERSION_READY_MASK 0x400
 
 // Protos
 void alert(void);
