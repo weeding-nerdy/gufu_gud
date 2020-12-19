@@ -72,7 +72,7 @@ void alert(void) {
     const float current = ina260.readCurrent();
 
     // Serialize and send to USB Serial port
-    StaticJsonDocument<128> doc;
+    DynamicJsonDocument doc(JSON_BUFFER_SIZE);
     doc["v"] = voltage / 1000.0;
     doc["i"] = current / 1000.0;
     doc["t"] = timestamp / 1000000.0;
