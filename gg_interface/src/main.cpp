@@ -37,7 +37,7 @@ void setup() {
     ina260.MaskEnable->read();
 
     // Enable alert on "Conversion Ready"
-    ina260.MaskEnable->write(CONVERSION_READY_ADDRESS);
+    ina260.MaskEnable->write(CONVERSION_READY_MASK);
 
     // Attach ISR to "alert" pin from the INA260 to handle reading of the data
     attachInterrupt(digitalPinToInterrupt(ALERT_PIN), alert, FALLING); // TODO: FALLING or LOW?
