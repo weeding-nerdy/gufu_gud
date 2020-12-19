@@ -19,11 +19,14 @@ void setup() {
     Serial.println("Gufu Gud");
 
     // Initilize the INA260
-    if (!ina260.begin()) {
-        Serial.println("Couldn't find INA260!");
-        return;
+    uint8_t retries = INIT_ATTEMPTS;
+    while (retries > 0) {
+        if (!ina260.begin()) {
+            Serial.println("Couldn't find INA260!");
+            retries--;
+        }
+        Serial.println("Found INA260!");
     }
-    Serial.println("Found INA260!");
 
     // Configure I2C bus speed
     Wire.setClock(I2C_BUS_SPEED);
