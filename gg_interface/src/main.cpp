@@ -17,7 +17,7 @@ void setup() {
     }
     Serial.println(F("Gufu Gud"));
 
-    // Initilize the INA260
+    // Initialize the INA260
     uint8_t retries = INIT_ATTEMPTS;
     while (retries > 0) {
         if (!ina260.begin()) {
@@ -49,7 +49,9 @@ void setup() {
 }
 
 void loop() {
+    // We shouldn't get here, but just in case
     if (!initialized) {
+        Serial.println("In loop() but INA260 not Initialized!");
         return;
     }
 
@@ -65,6 +67,7 @@ void loop() {
 }
 
 void alert(void) {
+    // NOTE: The micros() function will roll-over to zero after 4294967295 us (1h, 11h, 34.967295s)
     const uint32_t timestamp = micros();
 
     // Read voltage and current registers
@@ -77,9 +80,6 @@ void alert(void) {
     doc["i"] = current / 1000.0;
     doc["t"] = timestamp / 1000000.0;
     serializeMsgPack(doc, Serial);
-
-    // Format seperator
-    // Serial.println(0x5AA5);
 
     // Read mask register to clear alert line
     ina260.MaskEnable->read();
