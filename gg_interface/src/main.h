@@ -9,6 +9,7 @@
 // Interface pins
 #define LED_PIN 13
 #define ALERT_PIN 21
+#define INIT_ATTEMPTS 5
 #define SERIAL_BAUD 115200
 #define I2C_BUS_SPEED 4e2 * 1e3
 #define CONVERSION_READY_MASK 0x400
