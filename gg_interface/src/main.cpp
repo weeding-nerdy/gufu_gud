@@ -15,16 +15,16 @@ void setup() {
     while (!Serial) {
         delay(10);
     }
-    Serial.println("Gufu Gud");
+    Serial.println(F("Gufu Gud"));
 
     // Initilize the INA260
     uint8_t retries = INIT_ATTEMPTS;
     while (retries > 0) {
         if (!ina260.begin()) {
-            Serial.println("Couldn't find INA260!");
+            Serial.println(F("Couldn't find INA260!"));
             retries--;
         }
-        Serial.println("Found INA260!");
+        Serial.println(F("Found INA260!"));
     }
 
     // Configure I2C bus speed
