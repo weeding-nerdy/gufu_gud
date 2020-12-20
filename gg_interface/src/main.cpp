@@ -15,16 +15,16 @@ void setup() {
     while (!Serial) {
         delay(10);
     }
-    Serial.println(F("Gufu Gud"));
+    debug_msg(F("Gufu Gud"));
 
     // Initialize the INA260
     uint8_t retries = INIT_ATTEMPTS;
     while (retries > 0) {
         if (!ina260.begin()) {
-            Serial.println(F("Couldn't find INA260!"));
+            debug_msg(F("Couldn't find INA260!"));
             retries--;
         }
-        Serial.println(F("Found INA260!"));
+        debug_msg(F("Found INA260!"));
         break;
     }
 
@@ -32,9 +32,9 @@ void setup() {
     Wire.setClock(I2C_BUS_SPEED);
 
     // Set conversion and averaging parameters
-    ina260.setVoltageConversionTime(INA260_TIME_558_us);
-    ina260.setCurrentConversionTime(INA260_TIME_558_us);
-    ina260.setAveragingCount(INA260_COUNT_1);
+    ina260.setVoltageConversionTime(INA260_CONVERSION_TIME);
+    ina260.setCurrentConversionTime(INA260_CONVERSION_TIME);
+    ina260.setAveragingCount(INA260_AVG_COUNT);
 
     // Clear any pending alerts
     ina260.MaskEnable->read();
@@ -51,7 +51,7 @@ void setup() {
 void loop() {
     // We shouldn't get here, but just in case
     if (!initialized) {
-        Serial.println("In loop() but INA260 not Initialized!");
+        debug_msg(F("In loop() but INA260 not Initialized!"));
         return;
     }
 
@@ -67,7 +67,8 @@ void loop() {
 }
 
 void alert(void) {
-    // NOTE: The micros() function will roll-over to zero after 4294967295 us (1h, 11h, 34.967295s)
+    // NOTE: The micros() function will roll-over to zero after 4294967295 us (1h, 11m, 34.967295s)
+    //       this is not compensated for.
     const uint32_t timestamp = micros();
 
     // Read voltage and current registers
@@ -75,12 +76,20 @@ void alert(void) {
     const float current = ina260.readCurrent();
 
     // Serialize and send to USB Serial port
-    DynamicJsonDocument doc(JSON_BUFFER_SIZE);
-    doc["v"] = voltage / 1000.0;
-    doc["i"] = current / 1000.0;
-    doc["t"] = timestamp / 1000000.0;
+    StaticJsonDocument<JSON_BUFFER_SIZE> doc;
+    doc["v"] = voltage * 1e-3;
+    doc["i"] = current * 1e-3;
+    doc["t"] = timestamp * 1e-6;
     serializeMsgPack(doc, Serial);
 
     // Read mask register to clear alert line
     ina260.MaskEnable->read();
+}
+
+void debug_msg(String msg) {
+    // Serialize and send debug message to USB Serial port
+    StaticJsonDocument<JSON_BUFFER_SIZE_DEBUG> doc;
+    doc["debug"] = true;
+    doc["msg"] = msg;
+    serializeMsgPack(doc, Serial);
 }
