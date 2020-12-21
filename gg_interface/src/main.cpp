@@ -76,7 +76,7 @@ void alert(void) {
     const float current = ina260.readCurrent();
 
     // Serialize and send to USB Serial port
-    // NOTE: doc must fit into JSON_BUFFER_SIZE
+    // NOTE: doc must fit into JSON_BUFFER_SIZE, see https://arduinojson.org/v6/assistant/ for estimates
     StaticJsonDocument<JSON_BUFFER_SIZE> doc;
     doc["v"] = voltage * 1e-3;
     doc["i"] = current * 1e-3;
@@ -89,7 +89,7 @@ void alert(void) {
 
 void debug_msg(String msg) {
     // Serialize and send debug message to USB Serial port
-    // NOTE: doc must fit into JSON_BUFFER_SIZE_DEBUG
+    // NOTE: doc must fit into JSON_BUFFER_SIZE_DEBUG, see https://arduinojson.org/v6/assistant/ for estimates
     StaticJsonDocument<JSON_BUFFER_SIZE_DEBUG> doc;
     doc["debug"] = true;
     doc["msg"] = msg;
