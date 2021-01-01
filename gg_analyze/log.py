@@ -1,3 +1,4 @@
+from datetime import datetime
 import argparse
 import math
 import msgpack
@@ -19,6 +20,10 @@ if not args.port:
   print('Port is required!')
   sys.exit(1)
 
+filename = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+
+print("Press Ctrl-C to finish data collection!", flush=True)
+
 # Configure Serial port with 100 ms timeout
 ser = serial.Serial(args.port, timeout=0.1)
 
@@ -34,7 +39,7 @@ try:
     if not buf:
         # Try again later
         continue
-        
+
     # Feed data to deserialization
     unpacker.feed(buf)
     
@@ -43,9 +48,9 @@ try:
         for obj in unpacker:
             if not isinstance(obj, dict):
                 # We only want dicts!
-                print(f'rejecting: {obj}\t{chr(obj)}')
+                print(f'Rejecting {obj}\t{chr(obj)}')
                 break
-            
+
             # Save data
             data_list.append(obj)
     except (msgpack.ExtraData, msgpack.OutOfData, msgpack.FormatError, msgpack.StackError, UnicodeDecodeError) as ex:
@@ -53,5 +58,20 @@ try:
         print(ex)
         continue
 except KeyboardInterrupt:
-  print('Done capturing data')
-  sys.exit(1)
+  print(f'Captured {len(data_list)} frames')
+
+  # Make dataframe
+  df = pd.DataFrame(data_list)
+  # Remove bias, create elapsed time
+  df['t'] -= df.t.iloc[0]
+  # Calculate resistance and power from voltage and current
+  df['r'] = df['v'] / df['i']
+  df['p'] = df['v'] * df['i']
+  # Shift t=0 to the start of the puff (first time when power > half the max power in the data)
+  df.t -= df[df.p.gt(df.p.max() / 2.0)].t.iloc[0]
+  # Quantized time to 10 Hz
+  df['t_quant'] = df.t.round(1)
+
+  path = f'capture-{filename}.csv'
+  df.to_csv(path)
+  print(f'Wrote {path}')
