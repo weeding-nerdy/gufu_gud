@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+tqdm = "*"
+pandas = "*"
+numpy = "*"
+seaborn = "*"
+scipy = "*"
+matplotlib = "*"
+pyserial = "*"
+msgpack = "*"
+
+[dev-packages]
+
