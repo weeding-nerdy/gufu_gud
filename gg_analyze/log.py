@@ -9,7 +9,6 @@ import scipy.signal as signal
 import seaborn as sns
 import serial
 import sys
-import tqdm
 
 parser = argparse.ArgumentParser(description='Log gufu_gud data.')
 parser.add_argument('path', help='Path to save capture data to')

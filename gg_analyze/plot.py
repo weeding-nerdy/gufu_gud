@@ -2,14 +2,11 @@ from gufugud import parse
 from gufugud import temp
 import argparse
 import matplotlib.pyplot as plt
-import msgpack
-import numpy as np
 import pandas as pd
 import os
 import seaborn as sns
 import serial
 import sys
-import tqdm
 
 parser = argparse.ArgumentParser(description='Plot gufu_gud data.')
 parser.add_argument('path', nargs=1)
