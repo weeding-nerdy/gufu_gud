@@ -68,13 +68,8 @@ except KeyboardInterrupt:
     df = pd.DataFrame(data_list)
     # Remove bias, create elapsed time
     df['t'] -= df.t.iloc[0]
-    # Calculate resistance and power from voltage and current
-    df['r'] = df['v'] / df['i']
-    df['p'] = df['v'] * df['i']
     # Shift t=0 to the start of the puff (first time when power > half the max power in the data)
     df.t -= df[df.p.gt(df.p.max() / 2.0)].t.iloc[0]
-    # Quantized time to 10 Hz
-    df['t_quant'] = df.t.round(1)
 
     path = f'{args.path}-{filename}.csv'
     df.to_csv(path)

@@ -5,6 +5,13 @@ import scipy.signal as signal
 
 
 def parse_df(df):
+    # Calculate resistance and power from voltage and current
+    df['r'] = df['v'] / df['i']
+    df['p'] = df['v'] * df['i']
+
+    # Quantized time to 10 Hz
+    df['t_quant'] = df.t.round(1)
+
     frame_count = len(df)
     first_timestamp = df.t.iloc[0]
     print(f'Read {frame_count} frames')
