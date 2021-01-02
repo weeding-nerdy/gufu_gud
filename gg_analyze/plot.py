@@ -29,12 +29,13 @@ path = args.path[0]
 df = pd.read_csv(path)
 filename = os.path.splitext(path)[0]
 frame_count = len(df)
+first_timestamp = df.t.iloc[0]
 print(f'Read {frame_count} frames')
 
 data_rate = 1.0 / df['t'].diff().mean()
 print(f'Data rate is {data_rate}hz')
 
-puff_length = frame_count / data_rate
+puff_length = (frame_count / data_rate) - (first_timestamp * -1)
 print(f'Puff was {puff_length}s')
 
 plot = df.plot(y=['v', 'i', 'p'], x='t', xlim=(0, puff_length), ylim=(0, df['p'].max()))
