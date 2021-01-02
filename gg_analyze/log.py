@@ -37,26 +37,30 @@ try:
     buf = ser.read(256)
     
     if not buf:
-        # Try again later
-        continue
+      # Try again later
+      continue
 
     # Feed data to deserialization
     unpacker.feed(buf)
     
     try:
-        # Process new objects
-        for obj in unpacker:
-            if not isinstance(obj, dict):
-                # We only want dicts!
-                print(f'Rejecting {obj}\t{chr(obj)}')
-                break
+      # Process new objects
+      for obj in unpacker:
+        if not isinstance(obj, dict):
+          # We only want dicts!
+          print(f'Rejecting {obj}\t{chr(obj)}')
+          break
 
-            # Save data
-            data_list.append(obj)
+        if 'debug' in obj:
+          # Debug message, display it but don't save it
+          print(f'DEBUG: {obj}')
+        else:
+          # Save data
+          data_list.append(obj)
     except (msgpack.ExtraData, msgpack.OutOfData, msgpack.FormatError, msgpack.StackError, UnicodeDecodeError) as ex:
-        # These should all be (maybe?) ok?
-        print(ex)
-        continue
+      # These should all be (maybe?) ok?
+      print(ex)
+      continue
 except KeyboardInterrupt:
   print(f'Captured {len(data_list)} frames')
 
