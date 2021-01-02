@@ -14,4 +14,4 @@ pyserial = "*"
 msgpack = "*"
 
 [dev-packages]
-
+autopep8 = "*"
