@@ -30,7 +30,7 @@ current_path = f'current-{filename}.png'
 current.get_figure().savefig(current_path)
 print(f'Wrote {current_path}')
 
-resistance = df.plot(y='r', x='t', xlim=(0, 10), ylim=(0, 10))
+resistance = df.plot(y='r', x='t', xlim=(0, 10), ylim=(0, 1.5))
 resistance_path = f'resistance-{filename}.png'
 resistance.get_figure().savefig(resistance_path)
 print(f'Wrote {resistance_path}')
