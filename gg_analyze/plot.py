@@ -64,7 +64,7 @@ plot.get_figure().savefig(plot_path, dpi=256)
 print(f'Wrote {plot_path}')
 
 plt.figure(figsize=(32, 18))
-pp = sns.relplot(data=df, x='t', y='temp', kind='line', height=16)
+pp = sns.relplot(data=df, x='t_quant', y='temp', kind='line', height=16)
 pp.set(xlabel='Puff Time (s)', ylabel='Temperature (C)', title='Temperature')
 plt.grid(b=True)
 pp.set(ylim=(0, max_temp))
