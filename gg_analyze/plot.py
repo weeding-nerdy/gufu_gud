@@ -28,8 +28,9 @@ path = args.path[0]
 filename = os.path.splitext(path)[0]
 
 df = pd.read_csv(path)
-df = temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
 df = parse.parse_df(df)
+df = temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
+df = parse.decimate_df(df)
 
 max_temp = args.temperature + 30
 last_timestamp = df.t[df.t.last_valid_index()]
