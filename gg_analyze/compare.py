@@ -25,6 +25,7 @@ for path in args.paths:
     df = pd.read_csv(path)
     parse.parse_df(df)
     temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
+    df = parse.decimate_df(df)
     underscore_pos = path.rindex('_')
     df['name'] = path[0:underscore_pos]
     dfs.append(df)
@@ -32,7 +33,7 @@ for path in args.paths:
 combined_df = pd.concat(dfs)
 
 plt.figure(figsize=(32, 18))
-pp = sns.lineplot(data = combined_df, x='t', y='temp', hue='name')
+pp = sns.relplot(data = combined_df, x='t_quant', y='temp', hue='name', kind='line', markers=False, height=16)
 plt.grid(b=True)
 plt.axhline(linewidth=2, color='r', y=args.temperature)
 plt.tight_layout()
