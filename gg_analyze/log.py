@@ -11,7 +11,7 @@ import serial
 import sys
 
 parser = argparse.ArgumentParser(description='Log gufu_gud data.')
-parser.add_argument('path', help='Path to save capture data to')
+parser.add_argument('device', help='Device name')
 parser.add_argument('--port', '-p', help='Serial port to communicate over')
 
 args = parser.parse_args()
@@ -20,7 +20,11 @@ if not args.port:
     print('Port is required!')
     sys.exit(1)
 
-filename = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+if not args.device:
+    print('Device name is required!')
+    sys.exit(1)
+
+filename = f'{args.device}_{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.csv'
 
 print("Press Ctrl-C to finish data collection!", flush=True)
 
@@ -66,11 +70,12 @@ except KeyboardInterrupt:
 
     # Make dataframe
     df = pd.DataFrame(data_list)
+    # Add power calc
+    df['p'] = df['v'] * df['i']
     # Remove bias, create elapsed time
     df['t'] -= df.t.iloc[0]
     # Shift t=0 to the start of the puff (first time when power > half the max power in the data)
     df.t -= df[df.p.gt(df.p.max() / 2.0)].t.iloc[0]
 
-    path = f'{args.path}-{filename}.csv'
-    df.to_csv(path)
-    print(f'Wrote {path}')
+    df.to_csv(filename)
+    print(f'Wrote {filename}')
