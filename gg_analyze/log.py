@@ -44,7 +44,7 @@ try:
             for obj in unpacker:
                 if not isinstance(obj, dict):
                     # We only want dicts!
-                    print(f'Rejecting {obj}\t{chr(obj)}', flush=True)
+                    print(f'Rejecting {obj}', flush=True)
                     break
 
                 if 'debug' in obj:
