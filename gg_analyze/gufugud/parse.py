@@ -26,13 +26,16 @@ def parse_df(df):
     return valid_df
 
 def decimate_df(df):
+    # Determine the start of the data
     frame_count = len(df)
     first_timestamp = df.t.iloc[0]
     print(f'Read {frame_count} frames')
 
+    # Determine the average data rate in Hz
     data_rate = 1.0 / df['t'].diff().mean()
     print(f'Data rate is {data_rate}hz')
 
+    # Subtract start of puff from number of seconds recorded
     puff_length = (frame_count / data_rate) - (first_timestamp * -1)
     print(f'Puff was {puff_length}s')
 
@@ -42,12 +45,15 @@ def decimate_df(df):
     data_rate_multiplier = data_rate / decimation_ratio
     print(f'Decimating data by a factor of {decimation_ratio}')
 
+    # Decimate the data to the desired data rate
     decimated_df = df[df.t.between(0, puff_length)]
     decimated_df = decimated_df.apply(lambda x: signal.decimate(
         x, decimation_ratio, ftype='fir'), axis='index')
+    # t_quant needs to be re-created after decimation
     decimated_df = decimated_df.drop('t_quant', axis='columns')
     decimated_df = decimated_df.assign(t=np.arange(
         len(decimated_df)) / data_rate_multiplier)
+    # Calculate quantized time (10Hz)
     decimated_df['t_quant'] = decimated_df.t.round(1)
 
     return decimated_df
