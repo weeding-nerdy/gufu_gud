@@ -21,16 +21,21 @@ if len(args.paths) < 2:
 dfs = []
 
 for path in args.paths:
+    # Load each file into a dataframe
     df = pd.read_csv(path)
+    # Parse, temp-calculate, and decimate the data
     parse.parse_df(df)
     temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
     df = parse.decimate_df(df)
+    # Get the series name for the legend
     underscore_pos = path.rindex('_')
     df['name'] = path[0:underscore_pos]
+    # Add to list of dataframes
     dfs.append(df)
 
 combined_df = pd.concat(dfs)
 
+# Graph each temp curve against each other
 plt.figure(figsize=(32, 18))
 pp = sns.relplot(data = combined_df, x='t_quant', y='temp', hue='name', kind='line', markers=False, height=16)
 plt.grid(b=True)
