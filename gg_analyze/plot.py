@@ -9,20 +9,12 @@ import serial
 import sys
 
 parser = argparse.ArgumentParser(description='Plot gufu_gud data.')
-parser.add_argument('path', nargs=1)
+parser.add_argument('path', nargs=1, required=True)
 parser.add_argument('--resistance', '-r', type=float,
-                    help='Cold resistance of the atomizer')
+                    help='Cold resistance of the atomizer', required=True)
 parser.add_argument('--temperature', '--temp', '-t',
                     type=float, help='Set temperature in C')
 args = parser.parse_args()
-
-if not args.path:
-    print('Path to a CSV is required!')
-    sys.exit(1)
-
-if not args.resistance:
-    print('Cold resistance is required!')
-    sys.exit(1)
 
 path = args.path[0]
 filename = os.path.splitext(path)[0]
@@ -70,7 +62,8 @@ pp.set(xlabel='Puff Time (s)', ylabel='Temperature (C)', title='Temperature')
 plt.grid(b=True)
 pp.set(ylim=(0, max_temp))
 pp.set(xlim=(0, last_timestamp))
-plt.axhline(linewidth=2, color='r', y=args.temperature)
+if args.temperature
+    plt.axhline(linewidth=2, color='r', y=args.temperature)
 plt.tight_layout()
 plt.savefig(f'temp-{filename}.png', dpi=256)
 print(f'Wrote temp-{filename}.png')

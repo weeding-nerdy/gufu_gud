@@ -11,18 +11,10 @@ import serial
 import sys
 
 parser = argparse.ArgumentParser(description='Log gufu_gud data.')
-parser.add_argument('device', help='Device name')
-parser.add_argument('--port', '-p', help='Serial port to communicate over')
+parser.add_argument('device', help='Device name', required=True)
+parser.add_argument('--port', '-p', help='Serial port to communicate over', required=True)
 
 args = parser.parse_args()
-
-if not args.port:
-    print('Port is required!')
-    sys.exit(1)
-
-if not args.device:
-    print('Device name is required!')
-    sys.exit(1)
 
 filename = f'{args.device}_{datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.csv'
 
