@@ -7,7 +7,7 @@ import seaborn as sns
 import sys
 
 parser = argparse.ArgumentParser(description='Compare multiple puffs')
-parser.add_argument('paths', nargs='*', required=True)
+parser.add_argument('paths', nargs='*')
 parser.add_argument('--resistance', '-r', type=float,
                     help='Cold resistance of the atomizer', required=True)
 parser.add_argument('--temperature', '--temp', '-t',
@@ -39,7 +39,7 @@ combined_df = pd.concat(dfs)
 plt.figure(figsize=(32, 18))
 pp = sns.relplot(data = combined_df, x='t_quant', y='temp', hue='name', kind='line', markers=False, height=16)
 plt.grid(b=True)
-if args.temperature
+if args.temperature is not None:
     plt.axhline(linewidth=2, color='r', y=args.temperature)
 plt.tight_layout()
 plt.savefig('compare.png', dpi=256)

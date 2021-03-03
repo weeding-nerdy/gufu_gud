@@ -9,7 +9,7 @@ import serial
 import sys
 
 parser = argparse.ArgumentParser(description='Plot gufu_gud data.')
-parser.add_argument('path', nargs=1, required=True)
+parser.add_argument('path', nargs=1)
 parser.add_argument('--resistance', '-r', type=float,
                     help='Cold resistance of the atomizer', required=True)
 parser.add_argument('--temperature', '--temp', '-t',
@@ -62,7 +62,7 @@ pp.set(xlabel='Puff Time (s)', ylabel='Temperature (C)', title='Temperature')
 plt.grid(b=True)
 pp.set(ylim=(0, max_temp))
 pp.set(xlim=(0, last_timestamp))
-if args.temperature
+if args.temperature is not None:
     plt.axhline(linewidth=2, color='r', y=args.temperature)
 plt.tight_layout()
 plt.savefig(f'temp-{filename}.png', dpi=256)
