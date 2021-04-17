@@ -14,6 +14,8 @@ parser.add_argument('--resistance', '-r', type=float,
                     help='Cold resistance of the atomizer', required=True)
 parser.add_argument('--temperature', '--temp', '-t',
                     type=float, help='Set temperature in C')
+parser.add_argument('--material', '--mat', '-m',
+                    default='ss316l', help='Material (ss316l or escc_v1)')
 args = parser.parse_args()
 
 path = args.path[0]
@@ -21,7 +23,7 @@ filename = os.path.splitext(path)[0]
 
 df = pd.read_csv(path)
 df = parse.parse_df(df)
-df = temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
+df = temp.calculate_temp(df, args.resistance, args.material, 'tfr')
 df = parse.decimate_df(df)
 
 max_temp = args.temperature + 30

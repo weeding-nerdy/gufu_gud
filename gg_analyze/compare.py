@@ -12,7 +12,8 @@ parser.add_argument('--resistance', '-r', type=float,
                     help='Cold resistance of the atomizer', required=True)
 parser.add_argument('--temperature', '--temp', '-t',
                     type=float, help='Set temperature in C')
-
+parser.add_argument('--material', '--mat', '-m',
+                    default='ss316l', help='Material (ss316l or escc_v1)')
 args = parser.parse_args()
 
 if len(args.paths) < 2:
@@ -25,7 +26,7 @@ for path in args.paths:
     df = pd.read_csv(path)
     # Parse, temp-calculate, and decimate the data
     parse.parse_df(df)
-    temp.calculate_temp(df, args.resistance, 'ss316l', 'tfr')
+    temp.calculate_temp(df, args.resistance, args.material, 'tfr')
     df = parse.decimate_df(df)
     # Get the series name for the legend
     underscore_pos = path.rindex('_')
