@@ -4,7 +4,6 @@ import scipy.interpolate as interp
 # Materials reference tables
 MATERIAL_REF = {
     'tcr': {
-        #         'ss316l': 879*10**-6  # delta_r/r per degree Celsius  # From Steam Engine calculator
         'ss316l': 920*10**-6,  # delta_r/r per degree Celsius
     },
     'tfr': {
