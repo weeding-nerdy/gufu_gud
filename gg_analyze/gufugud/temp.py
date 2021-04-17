@@ -117,7 +117,18 @@ def coldres_to_tcr(material='escc_v1'):
     return temp_func
 
 
-def calculate_temp(df, resistance, material, method):
+def calculate_temp(df, resistance, material = 'ss316l', method = 'tfr'):
+    """ Apply a temperature estimation function to resistance data.
+
+    Args:
+        df: DataFrame to process
+        resistance: Cold resistance of the coil
+        material: Material type, either 'ss316l' or 'escc_v1'
+        method: Estimation type, either 'tcr' or 'tfr'
+
+    Returns:
+        DataFrame
+    """
     t_func = resratio_to_temp(material=material, method=method)
     df['temp'] = t_func(df.r / resistance)
     df['temp'] = df.temp.fillna(0).clip(0.0, 300.0)
