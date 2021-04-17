@@ -79,8 +79,9 @@ def resratio_to_temp(t_cold=None, material='ss316l', method='tfr'):
     if method == 'tcr':
         # Temperature Coefficient of Resistance method
         t_cold = 20.0 if t_cold is None else t_cold  # Default t_cold is 20 C
-        def temp_func(rr, t_cold=t_cold, material=material): return np.asarray(
-            t_cold + ((np.asarray(rr) - 1.0) / material))
+
+        def temp_func(rr, t_cold=t_cold, material=material):
+            return np.asarray(t_cold + ((np.asarray(rr) - 1.0) / material))
     elif method == 'tfr':
         # Temperature Function of Resistance method, cubic spline interpolation
         temp, rr = tuple(zip(*material))
@@ -116,7 +117,7 @@ def coldres_to_tcr(material='escc_v1'):
     return temp_func
 
 
-def calculate_temp(df, resistance, material = 'ss316l', method = 'tfr'):
+def calculate_temp(df, resistance, material='ss316l', method='tfr'):
     """ Apply a temperature estimation function to resistance data.
 
     Args:
