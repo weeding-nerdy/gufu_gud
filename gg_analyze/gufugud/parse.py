@@ -12,7 +12,7 @@ def parse_df(df):
     # Quantized time to 10 Hz
     df['t_quant'] = df.t.round(1)
 
-    # Find values where power < 0.5 Watts
+    # Find values where power > 0.5 Watts
     valid_mask = df.p.gt(0.5)
     for i in range(1, len(valid_mask) - 1):
         if not valid_mask[i]:
