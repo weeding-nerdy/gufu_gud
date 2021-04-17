@@ -35,8 +35,8 @@ def decimate_df(df):
     data_rate = 1.0 / df['t'].diff().mean()
     print(f'Data rate is {data_rate}hz')
 
-    # Subtract start of puff from number of seconds recorded
-    puff_length = (frame_count / data_rate) - (first_timestamp * -1)
+    # Determine puff length by comparing first/last frame times
+    puff_length = df.t.iloc[-1] - df.t.iloc[0]
     print(f'Puff was {puff_length}s')
 
     # TODO: make configurable
