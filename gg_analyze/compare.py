@@ -16,6 +16,7 @@ parser.add_argument('--material', '--mat', '-m',
                     default='ss316l', help='Material (ss316l or escc_v1)')
 args = parser.parse_args()
 
+# Ensure there are at least two paths to compare
 if len(args.paths) < 2:
     raise ValueError(
         f'Must supply two or more paths! Paths given: {args.paths}')
@@ -30,11 +31,15 @@ for path in args.paths:
     temp.calculate_temp(df, args.resistance, args.material, 'tfr')
     df = parse.decimate_df(df)
     # Get the series name for the legend
-    underscore_pos = path.rindex('_')
+    underscore_pos = path.rfind('_')
+    # Handle cases where filename is not formatted correctly
+    if underscore_pos == -1:
+        raise ValueError(f'{path} does not follow the format <name>_<timestamp>!')
     df['name'] = path[0:underscore_pos]
     # Add to list of dataframes
     dfs.append(df)
 
+# Combine all dataframes together for graphing
 combined_df = pd.concat(dfs)
 
 # Graph each temp curve against each other
