@@ -17,7 +17,8 @@ parser.add_argument('--material', '--mat', '-m',
 args = parser.parse_args()
 
 if len(args.paths) < 2:
-    raise ValueError(f'Must supply two or more paths! Paths given: {args.paths}')
+    raise ValueError(
+        f'Must supply two or more paths! Paths given: {args.paths}')
 
 dfs = []
 
@@ -38,7 +39,8 @@ combined_df = pd.concat(dfs)
 
 # Graph each temp curve against each other
 plt.figure(figsize=(32, 18))
-pp = sns.relplot(data = combined_df, x='t_quant', y='temp', hue='name', kind='line', markers=False, height=16)
+pp = sns.relplot(data=combined_df, x='t_quant', y='temp',
+                 hue='name', kind='line', markers=False, height=16)
 plt.grid(b=True)
 if args.temperature is not None:
     plt.axhline(linewidth=2, color='r', y=args.temperature)
