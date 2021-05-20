@@ -26,6 +26,7 @@ void setup() {
         if (!ina260.begin()) {
             debug_msg(F("Couldn't find INA260!"));
             retries--;
+            continue;
         }
         debug_msg(F("Found INA260!"));
         break;
