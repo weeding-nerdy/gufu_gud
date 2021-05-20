@@ -4,6 +4,9 @@ Adafruit_INA260 ina260 = Adafruit_INA260();
 bool initialized = false;
 
 void setup() {
+    // In case there is no 10k resistor on the ALERT line
+    pinMode(ALERT_PIN, INPUT_PULLUP);
+
     // Every embedded system needs an LED
     pinMode(LED_PIN, OUTPUT);
     digitalWrite(LED_PIN, HIGH);
